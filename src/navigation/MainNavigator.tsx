@@ -48,7 +48,7 @@ export default function MainNavigator() {
         tabBarActiveTintColor:   C.primary,
         tabBarInactiveTintColor: C.textMuted,
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 10,
           fontWeight: '600',
           letterSpacing: 0.2,
           marginBottom: 2,
@@ -68,7 +68,7 @@ export default function MainNavigator() {
         headerTintColor:   '#ffffff',
         headerTitleStyle: {
           fontWeight:    '700',
-          fontSize:      17,
+          fontSize:      15,
           letterSpacing: 0.3,
         },
         headerRight: () => (

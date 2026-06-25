@@ -166,13 +166,13 @@ function makeStyles(C: ReturnType<typeof useTheme>['theme']) {
       elevation: 10,
     },
     logo: {
-      fontSize: 30,
+      fontSize: 26,
       fontWeight: '800',
       color: C.primary,
       letterSpacing: 8,
     },
     logoSub: {
-      fontSize: 13,
+      fontSize: 12,
       color: C.textMuted,
       marginTop: 4,
       letterSpacing: 0.3,
@@ -192,13 +192,13 @@ function makeStyles(C: ReturnType<typeof useTheme>['theme']) {
       borderColor: C.border,
     },
     cardTitle: {
-      fontSize: 22,
+      fontSize: 19,
       fontWeight: '700',
       color: C.text,
       marginBottom: 4,
     },
     cardSub: {
-      fontSize: 14,
+      fontSize: 13,
       color: C.textMuted,
       marginBottom: 24,
     },
@@ -226,8 +226,8 @@ function makeStyles(C: ReturnType<typeof useTheme>['theme']) {
     },
     input: {
       flex: 1,
-      paddingVertical: 14,
-      fontSize: 15,
+      paddingVertical: 13,
+      fontSize: 14,
       color: C.text,
     },
     eyeBtn: {
@@ -251,7 +251,7 @@ function makeStyles(C: ReturnType<typeof useTheme>['theme']) {
     btnText: {
       color: '#ffffff',
       fontWeight: '700',
-      fontSize: 16,
+      fontSize: 14,
       letterSpacing: 0.5,
     },
     hint: {

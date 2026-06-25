@@ -82,13 +82,13 @@ const s = StyleSheet.create({
     marginBottom: 28,
   },
   logo: {
-    fontSize: 48,
+    fontSize: 42,
     fontWeight: '800',
     color: '#ffffff',
     letterSpacing: 12,
   },
   fullName: {
-    fontSize: 12,
+    fontSize: 11,
     color: GREEN300,
     marginTop: 8,
     textAlign: 'center',
@@ -103,7 +103,7 @@ const s = StyleSheet.create({
     marginVertical: 20,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#ffffff',
     fontWeight: '600',
     letterSpacing: 0.5,

@@ -90,7 +90,7 @@ function SensorCard({ label, value, unit, icon, color, bg, min, max }: SensorCar
   const sColor   = conditionColor(status, C);
 
   return (
-    <View style={[sc.card, { borderTopColor: color }]}>
+    <View style={[sc.card]}>
       <View style={[sc.iconWrap, { backgroundColor: bg }]}>
         {icon}
       </View>
@@ -144,13 +144,13 @@ function makeSensorCardStyles(C: Theme) {
       marginBottom: 4,
     },
     value: {
-      fontSize: 30,
+      fontSize: 26,
       fontWeight: '800',
       marginBottom: 10,
       color: C.text,
     },
     unit: {
-      fontSize: 16,
+      fontSize: 13,
       fontWeight: '500',
     },
     trackBg: {
@@ -244,13 +244,13 @@ function makeDeviceCardStyles(C: Theme) {
       marginBottom: 8,
     },
     label: {
-      fontSize: 14,
+      fontSize: 13,
       fontWeight: '700',
       color: C.text,
       marginBottom: 4,
     },
     state: {
-      fontSize: 10,
+      fontSize: 9,
       fontWeight: '800',
       letterSpacing: 1,
       marginBottom: 12,
@@ -329,8 +329,8 @@ function makeConditionBarStyles(C: Theme) {
       alignItems: 'center',
       gap: 8,
     },
-    label: { fontSize: 14, fontWeight: '600', color: C.text },
-    val:   { fontSize: 14, fontWeight: '700', color: C.text },
+    label: { fontSize: 13, fontWeight: '600', color: C.text },
+    val:   { fontSize: 13, fontWeight: '700', color: C.text },
     badge: {
       paddingHorizontal: 8,
       paddingVertical: 3,
@@ -519,11 +519,11 @@ function makeStyles(C: Theme) {
       gap: 8,
     },
     bannerStatus: {
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: '700',
     },
     bannerTime: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: '500',
     },
     headingRow: {
@@ -533,12 +533,12 @@ function makeStyles(C: Theme) {
       marginBottom: 20,
     },
     headingTitle: {
-      fontSize: 22,
+      fontSize: 19,
       fontWeight: '800',
       color: C.text,
     },
     headingSub: {
-      fontSize: 13,
+      fontSize: 12,
       color: C.textMuted,
       marginTop: 2,
     },
@@ -608,12 +608,12 @@ function makeStyles(C: Theme) {
       flex: 1,
     },
     alertMsg: {
-      fontSize: 14,
+      fontSize: 13,
       color: C.text,
       fontWeight: '500',
     },
     alertTime: {
-      fontSize: 12,
+      fontSize: 11,
       color: C.textMuted,
       marginTop: 2,
     },

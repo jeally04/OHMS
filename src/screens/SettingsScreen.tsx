@@ -42,7 +42,7 @@ function makeStepperStyles(C: Theme) {
   return StyleSheet.create({
     row:   { flexDirection: 'row', alignItems: 'center', gap: 10 },
     btn:   { width: 32, height: 32, borderRadius: 10, backgroundColor: C.surfaceAlt, borderWidth: 1, borderColor: C.border, alignItems: 'center', justifyContent: 'center' },
-    value: { fontSize: 16, fontWeight: '700', minWidth: 54, textAlign: 'center' },
+    value: { fontSize: 14, fontWeight: '700', minWidth: 54, textAlign: 'center' },
     unit:  { fontSize: 12, fontWeight: '500', color: '#8e8e93' },
   });
 }
@@ -90,7 +90,7 @@ function NavRow({
       <View style={[nr.iconWrap, { backgroundColor: danger ? C.errorBg : C.surfaceAlt }]}>
         <Ionicons name={iconName as any} size={18} color={iconColor} />
       </View>
-      <Text style={[nr.label, danger && { color: C.error }]}>{label}</Text>
+      <Text style={[nr.label, danger && { color: C.error }, { fontSize: 14 }]}>{label}</Text>
       <View style={nr.right}>
         {value ? <Text style={nr.value}>{value}</Text> : null}
         {onPress ? <Ionicons name="chevron-forward" size={16} color={C.textFaint} /> : null}
@@ -106,9 +106,9 @@ function makeNavRowStyles(C: Theme) {
       borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: C.divider,
     },
     iconWrap: { width: 32, height: 32, borderRadius: 9, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
-    label:    { flex: 1, fontSize: 15, color: '#1c1c1e', fontWeight: '500' },
+    label:    { flex: 1, fontSize: 14, color: '#1c1c1e', fontWeight: '500' },
     right:    { flexDirection: 'row', alignItems: 'center', gap: 4 },
-    value:    { fontSize: 14, color: '#8e8e93' },
+    value:    { fontSize: 13, color: '#8e8e93' },
   });
 }
 
@@ -128,7 +128,7 @@ function ToggleRow({
       <View style={{ width: 32, height: 32, borderRadius: 9, backgroundColor: iconBg, alignItems: 'center', justifyContent: 'center', marginRight: 12 }}>
         <Ionicons name={iconName as any} size={18} color={color} />
       </View>
-      <Text style={{ flex: 1, fontSize: 15, color: C.text, fontWeight: '500' }}>{label}</Text>
+      <Text style={{ flex: 1, fontSize: 14, color: C.text, fontWeight: '500' }}>{label}</Text>
       <Switch
         value={value}
         onValueChange={onToggle}
@@ -155,7 +155,7 @@ function ThresholdRow({
       <View style={{ width: 32, height: 32, borderRadius: 9, backgroundColor: iconBg, alignItems: 'center', justifyContent: 'center', marginRight: 12 }}>
         <Ionicons name={iconName as any} size={18} color={color} />
       </View>
-      <Text style={{ flex: 1, fontSize: 15, color: C.text, fontWeight: '500' }}>{label}</Text>
+      <Text style={{ flex: 1, fontSize: 14, color: C.text, fontWeight: '500' }}>{label}</Text>
       <Stepper value={value} unit={unit} color={color} onDecrement={onDecrement} onIncrement={onIncrement} />
     </View>
   );
@@ -325,12 +325,12 @@ function makeStyles(C: Theme) {
       color: C.primaryLight,
     },
     profileName: {
-      fontSize: 20,
+      fontSize: 17,
       fontWeight: '700',
       color: C.text,
     },
     profileEmail: {
-      fontSize: 13,
+      fontSize: 12,
       color: C.textMuted,
       marginTop: 2,
     },
@@ -365,7 +365,7 @@ function makeStyles(C: Theme) {
     saveBtnText: {
       color: '#ffffff',
       fontWeight: '700',
-      fontSize: 14,
+      fontSize: 13,
     },
     autoHint: {
       margin: 12,

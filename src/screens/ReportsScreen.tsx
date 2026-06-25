@@ -85,8 +85,8 @@ function StatPill({ label, value, color }: { label: string; value: string; color
   const { theme: C } = useTheme();
   return (
     <View style={{ flex: 1, alignItems: 'center', paddingVertical: 10 }}>
-      <Text style={{ fontSize: 15, fontWeight: '800', color }}>{value}</Text>
-      <Text style={{ fontSize: 10, color: C.textMuted, marginTop: 3, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+      <Text style={{ fontSize: 13, fontWeight: '800', color }}>{value}</Text>
+      <Text style={{ fontSize: 9, color: C.textMuted, marginTop: 3, textTransform: 'uppercase', letterSpacing: 0.5 }}>
         {label}
       </Text>
     </View>
@@ -169,7 +169,7 @@ function makeChartCardStyles(C: Theme) {
       justifyContent: 'center',
     },
     title: {
-      fontSize: 15,
+      fontSize: 13,
       fontWeight: '700',
       color: C.text,
       flex: 1,
@@ -383,7 +383,7 @@ function makeStyles(C: Theme) {
       borderRadius: 10,
     },
     rangeTxt: {
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: '600',
       color: C.textMuted,
     },
@@ -402,7 +402,7 @@ function makeStyles(C: Theme) {
       gap: 6,
     },
     dateLabel: {
-      fontSize: 13,
+      fontSize: 12,
       color: C.textSub,
       fontWeight: '500',
     },
@@ -439,13 +439,13 @@ function makeStyles(C: Theme) {
       borderColor: C.border,
     },
     dlTitle: {
-      fontSize: 15,
+      fontSize: 13,
       fontWeight: '700',
       color: C.text,
       marginBottom: 4,
     },
     dlSub: {
-      fontSize: 12,
+      fontSize: 11,
       color: C.textMuted,
       marginBottom: 16,
     },
@@ -462,7 +462,7 @@ function makeStyles(C: Theme) {
       gap: 6,
     },
     dlBtnLabel: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: '800',
       letterSpacing: 0.5,
     },
