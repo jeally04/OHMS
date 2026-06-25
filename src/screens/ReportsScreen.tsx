@@ -12,35 +12,39 @@ import { useTheme } from '../theme/ThemeContext';
 import { Theme } from '../theme/colors';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type Range = 'Day' | 'Week' | 'Month' | 'Year';
+type Range = 'Minute' | 'Hour' | 'Day' | 'Week' | 'Month';
 
 // ── Mock data ─────────────────────────────────────────────────────────────────
 const TEMP_DATA: Record<Range, number[]> = {
-  Day:   [20,21,21,20,19,20,22,23,24,24,23,22,22,21,21,22,23,23,22,22,21,21,20,20],
-  Week:  [21.2,22.4,22.1,23.0,21.8,22.5,22.4],
-  Month: [21,22,21,23,22,21,20,22,23,24,22,21,21,22,23,22,21,22,23,22,21,21,22,23,22,21,20,21,22,22],
-  Year:  [20.1,21.3,22.4,22.8,23.1,22.4,21.8,22.3,22.6,21.9,20.8,20.2],
+  Minute: [22.1,22.2,22.3,22.2,22.1,22.0,22.2,22.4,22.5,22.4,22.3,22.2],
+  Hour:   [21.8,21.9,22.0,22.2,22.4,22.5,22.4,22.3,22.2,22.3,22.4,22.4],
+  Day:    [20,21,21,20,19,20,22,23,24,24,23,22,22,21,21,22,23,23,22,22,21,21,20,20],
+  Week:   [21.2,22.4,22.1,23.0,21.8,22.5,22.4],
+  Month:  [21,22,21,23,22,21,20,22,23,24,22,21,21,22,23,22,21,22,23,22,21,21,22,23,22,21,20,21,22,22],
 };
 
 const HUMID_DATA: Record<Range, number[]> = {
-  Day:   [86,87,87,86,85,86,88,90,91,92,91,89,88,87,87,88,90,91,91,90,89,88,87,86],
-  Week:  [87.2,88.4,87.8,89.2,88.5,87.9,87.3],
-  Month: [86,87,88,89,88,87,85,87,90,92,89,87,86,88,90,89,87,88,90,89,87,86,88,90,88,86,85,87,88,88],
-  Year:  [85.2,86.8,88.2,89.5,90.1,88.7,87.4,88.1,89.3,88.0,86.5,85.8],
+  Minute: [87.1,87.2,87.3,87.2,87.0,86.9,87.1,87.4,87.5,87.4,87.3,87.2],
+  Hour:   [86.8,87.0,87.2,87.5,87.8,88.0,87.9,87.7,87.5,87.6,87.8,87.3],
+  Day:    [86,87,87,86,85,86,88,90,91,92,91,89,88,87,87,88,90,91,91,90,89,88,87,86],
+  Week:   [87.2,88.4,87.8,89.2,88.5,87.9,87.3],
+  Month:  [86,87,88,89,88,87,85,87,90,92,89,87,86,88,90,89,87,88,90,89,87,86,88,90,88,86,85,87,88,88],
 };
 
 const X_LABELS: Record<Range, string[]> = {
-  Day:   ['12a','2','4','6','8','10','12p','2','4','6','8','10','','','','','','','','','','','',''],
-  Week:  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-  Month: Array.from({ length: 30 }, (_, i) => (i % 6 === 0 ? String(i + 1) : '')),
-  Year:  ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  Minute: ['0s','5','10','15','20','25','30','35','40','45','50','55'],
+  Hour:   ['0m','5','10','15','20','25','30','35','40','45','50','55'],
+  Day:    ['12a','2','4','6','8','10','12p','2','4','6','8','10','','','','','','','','','','','',''],
+  Week:   ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+  Month:  Array.from({ length: 30 }, (_, i) => (i % 6 === 0 ? String(i + 1) : '')),
 };
 
 const DATE_LABELS: Record<Range, string> = {
-  Day:   'Jun 25, 2026',
-  Week:  'Jun 19 – Jun 25, 2026',
-  Month: 'June 2026',
-  Year:  '2026',
+  Minute: 'Last 60 seconds',
+  Hour:   'Last 60 minutes',
+  Day:    'Jun 25',
+  Week:   'Jun 19 – Jun 25',
+  Month:  'June',
 };
 
 // ── Bar Chart ─────────────────────────────────────────────────────────────────
@@ -267,7 +271,7 @@ export default function ReportsScreen() {
   const { theme: C } = useTheme();
   const s = useMemo(() => makeStyles(C), [C]);
 
-  const [range, setRange] = useState<Range>('Week');
+  const [range, setRange] = useState<Range>('Day');
   const tempData  = TEMP_DATA[range];
   const humidData = HUMID_DATA[range];
   const labels    = X_LABELS[range];
@@ -277,7 +281,7 @@ export default function ReportsScreen() {
 
       {/* Range tabs */}
       <View style={s.rangePill}>
-        {(['Day', 'Week', 'Month', 'Year'] as Range[]).map(r => (
+        {(['Minute', 'Hour', 'Day', 'Week', 'Month'] as Range[]).map(r => (
           <TouchableOpacity
             key={r}
             style={[s.rangeBtn, range === r && { backgroundColor: C.primary }]}
