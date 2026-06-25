@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -8,298 +8,172 @@ import {
   Alert,
   Switch,
 } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../context/AuthContext';
-import { C } from '../theme/colors';
+import { useTheme } from '../theme/ThemeContext';
+import { Theme } from '../theme/colors';
 
-// ── Small increment/decrement control ─────────────────────────────────────────
+// ── Stepper ───────────────────────────────────────────────────────────────────
 function Stepper({
-  value,
-  unit,
-  step = 1,
-  onDecrement,
-  onIncrement,
-  color = C.green800,
+  value, unit, onDecrement, onIncrement, color,
 }: {
-  value: number;
-  unit: string;
-  step?: number;
-  onDecrement: () => void;
-  onIncrement: () => void;
-  color?: string;
+  value: number; unit: string;
+  onDecrement: () => void; onIncrement: () => void;
+  color: string;
 }) {
+  const { theme: C } = useTheme();
+  const sp = useMemo(() => makeStepperStyles(C), [C]);
   return (
     <View style={sp.row}>
       <TouchableOpacity style={sp.btn} onPress={onDecrement} activeOpacity={0.75}>
-        <Text style={sp.btnText}>−</Text>
+        <Ionicons name="remove" size={18} color={C.textSub} />
       </TouchableOpacity>
       <Text style={[sp.value, { color }]}>
-        {value}
-        <Text style={sp.unit}>{unit}</Text>
+        {value}<Text style={sp.unit}>{unit}</Text>
       </Text>
       <TouchableOpacity style={sp.btn} onPress={onIncrement} activeOpacity={0.75}>
-        <Text style={sp.btnText}>+</Text>
+        <Ionicons name="add" size={18} color={C.textSub} />
       </TouchableOpacity>
     </View>
   );
 }
 
-const sp = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  btn: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: C.creamMid,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnText: {
-    fontSize: 18,
-    color: C.textSub,
-    lineHeight: 22,
-  },
-  value: {
-    fontSize: 16,
-    fontWeight: '700',
-    minWidth: 54,
-    textAlign: 'center',
-  },
-  unit: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: C.textMuted,
-  },
-});
-
-// ── Section header ─────────────────────────────────────────────────────────────
-function SectionHeader({ title }: { title: string }) {
-  return <Text style={sh.text}>{title}</Text>;
+function makeStepperStyles(C: Theme) {
+  return StyleSheet.create({
+    row:   { flexDirection: 'row', alignItems: 'center', gap: 10 },
+    btn:   { width: 32, height: 32, borderRadius: 10, backgroundColor: C.surfaceAlt, borderWidth: 1, borderColor: C.border, alignItems: 'center', justifyContent: 'center' },
+    value: { fontSize: 16, fontWeight: '700', minWidth: 54, textAlign: 'center' },
+    unit:  { fontSize: 12, fontWeight: '500', color: '#8e8e93' },
+  });
 }
 
-const sh = StyleSheet.create({
-  text: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: C.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
-    marginTop: 24,
-    marginBottom: 8,
-    paddingHorizontal: 2,
-  },
-});
-
-// ── Setting row (navigation-style) ────────────────────────────────────────────
-function NavRow({
-  icon,
-  label,
-  value,
-  danger,
-  onPress,
-}: {
-  icon: string;
-  label: string;
-  value?: string;
-  danger?: boolean;
-  onPress?: () => void;
-}) {
+// ── Section Header ────────────────────────────────────────────────────────────
+function SectionHeader({ title }: { title: string }) {
+  const { theme: C } = useTheme();
   return (
-    <TouchableOpacity
-      style={nr.row}
-      onPress={onPress}
-      disabled={!onPress}
-      activeOpacity={0.7}
-    >
-      <Text style={nr.icon}>{icon}</Text>
-      <Text style={[nr.label, danger && nr.danger]}>{label}</Text>
+    <Text style={{
+      fontSize: 11, fontWeight: '700', color: C.textMuted,
+      textTransform: 'uppercase', letterSpacing: 1.2,
+      marginTop: 24, marginBottom: 8, paddingHorizontal: 2,
+    }}>
+      {title}
+    </Text>
+  );
+}
+
+// ── Card wrapper ──────────────────────────────────────────────────────────────
+function Card({ children }: { children: React.ReactNode }) {
+  const { theme: C } = useTheme();
+  return (
+    <View style={{
+      backgroundColor: C.surface, borderRadius: 16, overflow: 'hidden',
+      shadowColor: '#000', shadowOpacity: 0.05, shadowOffset: { width: 0, height: 3 },
+      shadowRadius: 8, elevation: 3, borderWidth: 1, borderColor: C.border,
+    }}>
+      {children}
+    </View>
+  );
+}
+
+// ── Nav Row ───────────────────────────────────────────────────────────────────
+function NavRow({
+  iconName, label, value, danger, onPress,
+}: {
+  iconName: string; label: string; value?: string; danger?: boolean; onPress?: () => void;
+}) {
+  const { theme: C } = useTheme();
+  const nr = useMemo(() => makeNavRowStyles(C), [C]);
+  const iconColor = danger ? C.error : C.textMuted;
+
+  return (
+    <TouchableOpacity style={nr.row} onPress={onPress} disabled={!onPress} activeOpacity={0.7}>
+      <View style={[nr.iconWrap, { backgroundColor: danger ? C.errorBg : C.surfaceAlt }]}>
+        <Ionicons name={iconName as any} size={18} color={iconColor} />
+      </View>
+      <Text style={[nr.label, danger && { color: C.error }]}>{label}</Text>
       <View style={nr.right}>
         {value ? <Text style={nr.value}>{value}</Text> : null}
-        {onPress ? <Text style={nr.chevron}>›</Text> : null}
+        {onPress ? <Ionicons name="chevron-forward" size={16} color={C.textFaint} /> : null}
       </View>
     </TouchableOpacity>
   );
 }
 
-const nr = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: C.divider,
-  },
-  icon: {
-    fontSize: 18,
-    width: 32,
-    textAlign: 'center',
-    marginRight: 10,
-  },
-  label: {
-    flex: 1,
-    fontSize: 15,
-    color: C.text,
-    fontWeight: '500',
-  },
-  danger: {
-    color: C.error,
-  },
-  right: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  value: {
-    fontSize: 14,
-    color: C.textMuted,
-  },
-  chevron: {
-    fontSize: 20,
-    color: C.creamDark,
-    lineHeight: 22,
-  },
-});
+function makeNavRowStyles(C: Theme) {
+  return StyleSheet.create({
+    row: {
+      flexDirection: 'row', alignItems: 'center', padding: 14,
+      borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: C.divider,
+    },
+    iconWrap: { width: 32, height: 32, borderRadius: 9, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+    label:    { flex: 1, fontSize: 15, color: '#1c1c1e', fontWeight: '500' },
+    right:    { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    value:    { fontSize: 14, color: '#8e8e93' },
+  });
+}
 
-// ── Toggle row ────────────────────────────────────────────────────────────────
+// ── Toggle Row ────────────────────────────────────────────────────────────────
 function ToggleRow({
-  icon,
-  label,
-  value,
-  onToggle,
-  color = C.green700,
+  iconName, label, value, onToggle, color, iconBg,
 }: {
-  icon: string;
-  label: string;
-  value: boolean;
-  onToggle: (v: boolean) => void;
-  color?: string;
+  iconName: string; label: string; value: boolean;
+  onToggle: (v: boolean) => void; color: string; iconBg: string;
 }) {
+  const { theme: C } = useTheme();
   return (
-    <View style={tr.row}>
-      <Text style={tr.icon}>{icon}</Text>
-      <Text style={tr.label}>{label}</Text>
+    <View style={{
+      flexDirection: 'row', alignItems: 'center', padding: 14,
+      borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: C.divider,
+    }}>
+      <View style={{ width: 32, height: 32, borderRadius: 9, backgroundColor: iconBg, alignItems: 'center', justifyContent: 'center', marginRight: 12 }}>
+        <Ionicons name={iconName as any} size={18} color={color} />
+      </View>
+      <Text style={{ flex: 1, fontSize: 15, color: C.text, fontWeight: '500' }}>{label}</Text>
       <Switch
         value={value}
         onValueChange={onToggle}
-        trackColor={{ false: '#d1d5db', true: color }}
+        trackColor={{ false: C.border, true: color }}
         thumbColor="#ffffff"
       />
     </View>
   );
 }
 
-const tr = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: C.divider,
-  },
-  icon: {
-    fontSize: 18,
-    width: 32,
-    textAlign: 'center',
-    marginRight: 10,
-  },
-  label: {
-    flex: 1,
-    fontSize: 15,
-    color: C.text,
-    fontWeight: '500',
-  },
-});
-
-// ── Card wrapper ──────────────────────────────────────────────────────────────
-function Card({ children }: { children: React.ReactNode }) {
-  return <View style={crd.card}>{children}</View>;
-}
-
-const crd = StyleSheet.create({
-  card: {
-    backgroundColor: C.surface,
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 8,
-    elevation: 3,
-  },
-});
-
-// ── Threshold row (stepper inside card) ──────────────────────────────────────
+// ── Threshold Row ─────────────────────────────────────────────────────────────
 function ThresholdRow({
-  icon,
-  label,
-  value,
-  unit,
-  color,
-  onDecrement,
-  onIncrement,
+  iconName, iconBg, label, value, unit, color, onDecrement, onIncrement,
 }: {
-  icon: string;
-  label: string;
-  value: number;
-  unit: string;
-  color: string;
-  onDecrement: () => void;
-  onIncrement: () => void;
+  iconName: string; iconBg: string; label: string; value: number;
+  unit: string; color: string; onDecrement: () => void; onIncrement: () => void;
 }) {
+  const { theme: C } = useTheme();
   return (
-    <View style={thr.row}>
-      <Text style={thr.icon}>{icon}</Text>
-      <Text style={thr.label}>{label}</Text>
-      <Stepper
-        value={value}
-        unit={unit}
-        onDecrement={onDecrement}
-        onIncrement={onIncrement}
-        color={color}
-      />
+    <View style={{
+      flexDirection: 'row', alignItems: 'center', padding: 14,
+      borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: C.divider,
+    }}>
+      <View style={{ width: 32, height: 32, borderRadius: 9, backgroundColor: iconBg, alignItems: 'center', justifyContent: 'center', marginRight: 12 }}>
+        <Ionicons name={iconName as any} size={18} color={color} />
+      </View>
+      <Text style={{ flex: 1, fontSize: 15, color: C.text, fontWeight: '500' }}>{label}</Text>
+      <Stepper value={value} unit={unit} color={color} onDecrement={onDecrement} onIncrement={onIncrement} />
     </View>
   );
 }
 
-const thr = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: C.divider,
-  },
-  icon: {
-    fontSize: 18,
-    width: 32,
-    textAlign: 'center',
-    marginRight: 10,
-  },
-  label: {
-    flex: 1,
-    fontSize: 15,
-    color: C.text,
-    fontWeight: '500',
-  },
-});
-
 // ── Main Screen ───────────────────────────────────────────────────────────────
 export default function SettingsScreen() {
   const { logout } = useAuth();
+  const { theme: C, isDark, toggleTheme } = useTheme();
+  const s = useMemo(() => makeStyles(C), [C]);
 
-  // Device thresholds
   const [tempMin, setTempMin] = useState(18);
   const [tempMax, setTempMax] = useState(28);
   const [humMin,  setHumMin]  = useState(80);
   const [humMax,  setHumMax]  = useState(95);
-
-  // Auto-control & alerts
-  const [autoControl,   setAutoControl]   = useState(false);
-  const [pushAlerts,    setPushAlerts]    = useState(true);
-  const [emailAlerts,   setEmailAlerts]   = useState(false);
+  const [autoControl, setAutoControl] = useState(false);
+  const [pushAlerts,  setPushAlerts]  = useState(true);
+  const [emailAlerts, setEmailAlerts] = useState(false);
 
   function handleLogout() {
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
@@ -309,24 +183,15 @@ export default function SettingsScreen() {
   }
 
   function saveThresholds() {
-    if (tempMin >= tempMax) {
-      Alert.alert('Invalid Range', 'Temperature min must be less than max.');
-      return;
-    }
-    if (humMin >= humMax) {
-      Alert.alert('Invalid Range', 'Humidity min must be less than max.');
-      return;
-    }
+    if (tempMin >= tempMax) { Alert.alert('Invalid Range', 'Temperature min must be less than max.'); return; }
+    if (humMin  >= humMax)  { Alert.alert('Invalid Range', 'Humidity min must be less than max.');    return; }
     Alert.alert('Saved', `Thresholds updated:\nTemp ${tempMin}–${tempMax}°C  |  Humidity ${humMin}–${humMax}%`);
   }
 
   return (
-    <ScrollView
-      style={s.container}
-      contentContainerStyle={s.content}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Profile section */}
+    <ScrollView style={s.container} contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
+
+      {/* Profile */}
       <View style={s.profile}>
         <View style={s.avatar}>
           <Text style={s.avatarText}>A</Text>
@@ -339,59 +204,41 @@ export default function SettingsScreen() {
         </View>
       </View>
 
+      {/* Appearance */}
+      <SectionHeader title="Appearance" />
+      <Card>
+        <ToggleRow
+          iconName={isDark ? 'moon' : 'sunny'}
+          iconBg={isDark ? '#1e1535' : '#fffbeb'}
+          label="Dark Mode"
+          value={isDark}
+          onToggle={toggleTheme}
+          color={isDark ? C.fan : C.warning}
+        />
+      </Card>
+
       {/* Device thresholds */}
       <SectionHeader title="Device Thresholds" />
       <Card>
-        <ThresholdRow
-          icon="🌡️"
-          label="Temp Min"
-          value={tempMin}
-          unit="°C"
-          color={C.temp}
-          onDecrement={() => setTempMin(v => Math.max(0, v - 1))}
-          onIncrement={() => setTempMin(v => Math.min(tempMax - 1, v + 1))}
-        />
-        <ThresholdRow
-          icon="🌡️"
-          label="Temp Max"
-          value={tempMax}
-          unit="°C"
-          color={C.temp}
-          onDecrement={() => setTempMax(v => Math.max(tempMin + 1, v - 1))}
-          onIncrement={() => setTempMax(v => Math.min(50, v + 1))}
-        />
-        <ThresholdRow
-          icon="💧"
-          label="Humidity Min"
-          value={humMin}
-          unit="%"
-          color={C.humid}
-          onDecrement={() => setHumMin(v => Math.max(0, v - 1))}
-          onIncrement={() => setHumMin(v => Math.min(humMax - 1, v + 1))}
-        />
-        <ThresholdRow
-          icon="💧"
-          label="Humidity Max"
-          value={humMax}
-          unit="%"
-          color={C.humid}
-          onDecrement={() => setHumMax(v => Math.max(humMin + 1, v - 1))}
-          onIncrement={() => setHumMax(v => Math.min(100, v + 1))}
-        />
+        <ThresholdRow iconName="thermometer-outline" iconBg={C.tempBg} label="Temp Min"       value={tempMin} unit="°C" color={C.temp}  onDecrement={() => setTempMin(v => Math.max(0,          v - 1))} onIncrement={() => setTempMin(v => Math.min(tempMax - 1, v + 1))} />
+        <ThresholdRow iconName="thermometer"         iconBg={C.tempBg} label="Temp Max"       value={tempMax} unit="°C" color={C.temp}  onDecrement={() => setTempMax(v => Math.max(tempMin + 1, v - 1))} onIncrement={() => setTempMax(v => Math.min(50,          v + 1))} />
+        <ThresholdRow iconName="water-outline"       iconBg={C.humidBg} label="Humidity Min"  value={humMin}  unit="%"  color={C.humid} onDecrement={() => setHumMin(v  => Math.max(0,          v - 1))} onIncrement={() => setHumMin(v  => Math.min(humMax - 1,  v + 1))} />
+        <ThresholdRow iconName="water"               iconBg={C.humidBg} label="Humidity Max"  value={humMax}  unit="%"  color={C.humid} onDecrement={() => setHumMax(v  => Math.max(humMin + 1,  v - 1))} onIncrement={() => setHumMax(v  => Math.min(100,         v + 1))} />
         <TouchableOpacity style={s.saveBtn} onPress={saveThresholds} activeOpacity={0.8}>
           <Text style={s.saveBtnText}>Save Thresholds</Text>
         </TouchableOpacity>
       </Card>
 
-      {/* Auto-control */}
+      {/* Automation */}
       <SectionHeader title="Automation" />
       <Card>
         <ToggleRow
-          icon="⚡"
+          iconName="flash-outline"
+          iconBg={C.primaryBg}
           label="Auto-Control Devices"
           value={autoControl}
           onToggle={setAutoControl}
-          color={C.green700}
+          color={C.primary}
         />
         {autoControl && (
           <View style={s.autoHint}>
@@ -405,50 +252,38 @@ export default function SettingsScreen() {
       {/* Notifications */}
       <SectionHeader title="Notifications" />
       <Card>
-        <ToggleRow
-          icon="🔔"
-          label="Push Alerts"
-          value={pushAlerts}
-          onToggle={setPushAlerts}
-          color={C.warning}
-        />
-        <ToggleRow
-          icon="✉️"
-          label="Email Alerts"
-          value={emailAlerts}
-          onToggle={setEmailAlerts}
-          color={C.warning}
-        />
+        <ToggleRow iconName="notifications-outline" iconBg={C.warningBg} label="Push Alerts"  value={pushAlerts}  onToggle={setPushAlerts}  color={C.warning} />
+        <ToggleRow iconName="mail-outline"           iconBg={C.warningBg} label="Email Alerts" value={emailAlerts} onToggle={setEmailAlerts} color={C.warning} />
       </Card>
 
-      {/* Farm info */}
+      {/* Farm Info */}
       <SectionHeader title="Farm Info" />
       <Card>
-        <NavRow icon="🌿" label="Farm Name"    value="My Mushroom Farm" />
-        <NavRow icon="📍" label="Grow Room"    value="Room 1" />
-        <NavRow icon="🔌" label="Device ID"    value="ESP32-OHMS-01" />
-        <NavRow icon="🕐" label="Last Sync"    value="2 mins ago" />
+        <NavRow iconName="leaf-outline"           label="Farm Name" value="My Mushroom Farm" />
+        <NavRow iconName="location-outline"       label="Grow Room" value="Room 1" />
+        <NavRow iconName="hardware-chip-outline"  label="Device ID" value="ESP32-OHMS-01" />
+        <NavRow iconName="time-outline"           label="Last Sync" value="2 mins ago" />
       </Card>
 
       {/* Account */}
       <SectionHeader title="Account" />
       <Card>
-        <NavRow icon="👤" label="Edit Profile"      onPress={() => Alert.alert('Coming Soon')} />
-        <NavRow icon="🔑" label="Change Password"   onPress={() => Alert.alert('Coming Soon')} />
+        <NavRow iconName="person-outline" label="Edit Profile"    onPress={() => Alert.alert('Coming Soon')} />
+        <NavRow iconName="key-outline"    label="Change Password" onPress={() => Alert.alert('Coming Soon')} />
       </Card>
 
       {/* App */}
       <SectionHeader title="App" />
       <Card>
-        <NavRow icon="📱" label="Version" value="1.0.0" />
-        <NavRow icon="ℹ️"  label="About"   onPress={() => Alert.alert('OHMS v1.0', 'Optimal Harvest Management System\n\nBuilt for mushroom farm monitoring with ESP32.')} />
-        <NavRow icon="❓" label="Help"     onPress={() => Alert.alert('Help', 'Contact support at admin@ohms.com')} />
+        <NavRow iconName="phone-portrait-outline"       label="Version" value="1.0.0" />
+        <NavRow iconName="information-circle-outline"   label="About"   onPress={() => Alert.alert('OHMS v1.0', 'Optimal Harvest Management System\n\nBuilt for mushroom farm monitoring with ESP32.')} />
+        <NavRow iconName="help-circle-outline"          label="Help"    onPress={() => Alert.alert('Help', 'Contact support at admin@ohms.com')} />
       </Card>
 
-      {/* Sign out */}
+      {/* Session */}
       <SectionHeader title="Session" />
       <Card>
-        <NavRow icon="🚪" label="Sign Out" danger onPress={handleLogout} />
+        <NavRow iconName="log-out-outline" label="Sign Out" danger onPress={handleLogout} />
       </Card>
 
       <View style={{ height: 40 }} />
@@ -456,93 +291,95 @@ export default function SettingsScreen() {
   );
 }
 
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: C.cream,
-  },
-  content: {
-    padding: 16,
-    paddingBottom: 40,
-  },
-  profile: {
-    alignItems: 'center',
-    paddingVertical: 28,
-  },
-  avatar: {
-    width: 76,
-    height: 76,
-    borderRadius: 38,
-    backgroundColor: C.green800,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 12,
-    shadowColor: C.green800,
-    shadowOpacity: 0.35,
-    shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 12,
-    elevation: 8,
-  },
-  avatarText: {
-    fontSize: 32,
-    fontWeight: '700',
-    color: '#ffffff',
-  },
-  profileName: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: C.text,
-  },
-  profileEmail: {
-    fontSize: 13,
-    color: C.textMuted,
-    marginTop: 2,
-  },
-  deviceChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: C.green100,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 20,
-    marginTop: 10,
-    gap: 6,
-  },
-  onlineDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: C.success,
-  },
-  deviceChipText: {
-    fontSize: 12,
-    color: C.green900,
-    fontWeight: '600',
-  },
-  saveBtn: {
-    margin: 14,
-    backgroundColor: C.green800,
-    borderRadius: 12,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  saveBtnText: {
-    color: '#ffffff',
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  autoHint: {
-    margin: 12,
-    marginTop: 0,
-    backgroundColor: C.green50,
-    borderRadius: 10,
-    padding: 10,
-    borderLeftWidth: 3,
-    borderLeftColor: C.green500,
-  },
-  autoHintText: {
-    fontSize: 12,
-    color: C.green900,
-    lineHeight: 18,
-  },
-});
+function makeStyles(C: Theme) {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: C.bg,
+    },
+    content: {
+      padding: 16,
+      paddingBottom: 40,
+    },
+    profile: {
+      alignItems: 'center',
+      paddingVertical: 28,
+    },
+    avatar: {
+      width: 76,
+      height: 76,
+      borderRadius: 38,
+      backgroundColor: C.primaryBg,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 12,
+      shadowColor: '#000',
+      shadowOpacity: 0.25,
+      shadowOffset: { width: 0, height: 6 },
+      shadowRadius: 12,
+      elevation: 8,
+    },
+    avatarText: {
+      fontSize: 32,
+      fontWeight: '700',
+      color: C.primaryLight,
+    },
+    profileName: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: C.text,
+    },
+    profileEmail: {
+      fontSize: 13,
+      color: C.textMuted,
+      marginTop: 2,
+    },
+    deviceChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: C.successBg,
+      paddingHorizontal: 12,
+      paddingVertical: 5,
+      borderRadius: 20,
+      marginTop: 10,
+      gap: 6,
+    },
+    onlineDot: {
+      width: 7,
+      height: 7,
+      borderRadius: 4,
+      backgroundColor: C.success,
+    },
+    deviceChipText: {
+      fontSize: 12,
+      color: C.success,
+      fontWeight: '600',
+    },
+    saveBtn: {
+      margin: 14,
+      backgroundColor: C.primary,
+      borderRadius: 12,
+      paddingVertical: 12,
+      alignItems: 'center',
+    },
+    saveBtnText: {
+      color: '#ffffff',
+      fontWeight: '700',
+      fontSize: 14,
+    },
+    autoHint: {
+      margin: 12,
+      marginTop: 0,
+      backgroundColor: C.primaryBg,
+      borderRadius: 10,
+      padding: 10,
+      borderLeftWidth: 3,
+      borderLeftColor: C.primary,
+    },
+    autoHintText: {
+      fontSize: 12,
+      color: C.primaryLight,
+      lineHeight: 18,
+    },
+  });
+}

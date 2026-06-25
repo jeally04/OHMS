@@ -1,55 +1,108 @@
-export const C = {
-  // Greens — primary brand
-  green900: '#1b4332',
-  green800: '#2d6a4f',
-  green700: '#40916c',
-  green500: '#52b788',
-  green300: '#95d5b2',
-  green100: '#d8f3dc',
-  green50:  '#f0fdf4',
+export type Theme = {
+  bg: string;
+  surface: string;
+  surfaceAlt: string;
+  surfaceElevated: string;
+  text: string;
+  textSub: string;
+  textMuted: string;
+  textFaint: string;
+  border: string;
+  divider: string;
+  primary: string;
+  primaryLight: string;
+  primaryBg: string;
+  primaryForeground: string;
+  temp: string;
+  tempBg: string;
+  humid: string;
+  humidBg: string;
+  fan: string;
+  fanBg: string;
+  humidifier: string;
+  humidifierBg: string;
+  success: string;
+  successBg: string;
+  warning: string;
+  warningBg: string;
+  error: string;
+  errorBg: string;
+};
 
-  // Earthy neutrals
-  cream:    '#f0ebe4',
-  creamMid: '#e8dfd5',
-  creamDark:'#ddd5c8',
-  sand:     '#d4a373',
-  brown:    '#8b5e3c',
+export const lightTheme: Theme = {
+  bg:              '#f2f2f7',
+  surface:         '#ffffff',
+  surfaceAlt:      '#f2f2f7',
+  surfaceElevated: '#ffffff',
 
-  // Surfaces
-  surface:    '#ffffff',
-  surfaceAlt: '#f9f6f2',
+  text:      '#1c1c1e',
+  textSub:   '#3c3c43',
+  textMuted: '#8e8e93',
+  textFaint: '#aeaeb2',
 
-  // Text
-  text:    '#1c1c1e',
-  textSub: '#4b5563',
-  textMuted: '#9ca3af',
-  textFaint: '#bbb4aa',
+  border:  '#e5e5ea',
+  divider: '#e5e5ea',
 
-  // Sensor — temperature
+  primary:            '#2d6a4f',
+  primaryLight:       '#52b788',
+  primaryBg:          '#1b4332',
+  primaryForeground:  '#ffffff',
+
   temp:   '#e76f51',
   tempBg: '#fef3ee',
 
-  // Sensor — humidity
   humid:   '#4895ef',
   humidBg: '#eff6ff',
 
-  // Device — fan
   fan:   '#8b5cf6',
   fanBg: '#f5f3ff',
 
-  // Device — humidifier
   humidifier:   '#06b6d4',
   humidifierBg: '#ecfeff',
 
-  // Status
   success:   '#22c55e',
   successBg: '#f0fdf4',
   warning:   '#f59e0b',
   warningBg: '#fffbeb',
   error:     '#ef4444',
   errorBg:   '#fef2f2',
+};
 
-  // Borders & dividers
-  border:  '#e8e0d5',
-  divider: '#f0ebe4',
+export const darkTheme: Theme = {
+  bg:              '#000000',
+  surface:         '#1c1c1e',
+  surfaceAlt:      '#2c2c2e',
+  surfaceElevated: '#3a3a3c',
+
+  text:      '#f5f5f7',
+  textSub:   '#ebebf5',
+  textMuted: '#8e8e93',
+  textFaint: '#636366',
+
+  border:  '#38383a',
+  divider: '#38383a',
+
+  primary:            '#52b788',
+  primaryLight:       '#74c69d',
+  primaryBg:          '#0d2d1a',
+  primaryForeground:  '#ffffff',
+
+  temp:   '#ff6b47',
+  tempBg: '#2a1a10',
+
+  humid:   '#5ba4ff',
+  humidBg: '#0d1f35',
+
+  fan:   '#a78bfa',
+  fanBg: '#1e1535',
+
+  humidifier:   '#22d3ee',
+  humidifierBg: '#0a2530',
+
+  success:   '#30d158',
+  successBg: '#0d2d1a',
+  warning:   '#ffd60a',
+  warningBg: '#2d2000',
+  error:     '#ff453a',
+  errorBg:   '#2d1010',
 };

@@ -1,13 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import { C } from '../theme/colors';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
+const GREEN900 = '#1b4332';
+const GREEN500 = '#52b788';
+const GREEN300 = '#95d5b2';
 
 export default function SplashScreen() {
   const opacity = useRef(new Animated.Value(0)).current;
-  const scale  = useRef(new Animated.Value(0.85)).current;
-  const dot1   = useRef(new Animated.Value(0.3)).current;
-  const dot2   = useRef(new Animated.Value(0.3)).current;
-  const dot3   = useRef(new Animated.Value(0.3)).current;
+  const scale   = useRef(new Animated.Value(0.85)).current;
+  const dot1    = useRef(new Animated.Value(0.3)).current;
+  const dot2    = useRef(new Animated.Value(0.3)).current;
+  const dot3    = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
     Animated.parallel([
@@ -19,7 +23,7 @@ export default function SplashScreen() {
       Animated.loop(
         Animated.sequence([
           Animated.delay(delay),
-          Animated.timing(dot, { toValue: 1, duration: 400, useNativeDriver: true }),
+          Animated.timing(dot, { toValue: 1,   duration: 400, useNativeDriver: true }),
           Animated.timing(dot, { toValue: 0.3, duration: 400, useNativeDriver: true }),
         ])
       ).start();
@@ -33,7 +37,7 @@ export default function SplashScreen() {
     <View style={s.container}>
       <Animated.View style={[s.content, { opacity, transform: [{ scale }] }]}>
         <View style={s.iconRing}>
-          <Text style={s.icon}>🍄</Text>
+          <MaterialCommunityIcons name="mushroom" size={52} color="#ffffff" />
         </View>
 
         <Text style={s.logo}>OHMS</Text>
@@ -58,7 +62,7 @@ export default function SplashScreen() {
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: C.green900,
+    backgroundColor: GREEN900,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 32,
@@ -77,9 +81,6 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 28,
   },
-  icon: {
-    fontSize: 54,
-  },
   logo: {
     fontSize: 48,
     fontWeight: '800',
@@ -88,7 +89,7 @@ const s = StyleSheet.create({
   },
   fullName: {
     fontSize: 12,
-    color: C.green300,
+    color: GREEN300,
     marginTop: 8,
     textAlign: 'center',
     letterSpacing: 0.8,
@@ -97,7 +98,7 @@ const s = StyleSheet.create({
   divider: {
     width: 48,
     height: 2,
-    backgroundColor: C.green500,
+    backgroundColor: GREEN500,
     borderRadius: 1,
     marginVertical: 20,
   },
@@ -109,7 +110,7 @@ const s = StyleSheet.create({
   },
   device: {
     fontSize: 12,
-    color: C.green500,
+    color: GREEN500,
     marginTop: 6,
   },
   loaderRow: {
@@ -122,13 +123,13 @@ const s = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: C.green500,
+    backgroundColor: GREEN500,
   },
   loadingText: {
     position: 'absolute',
     bottom: 48,
     fontSize: 12,
-    color: C.green500,
+    color: GREEN500,
     letterSpacing: 0.5,
   },
 });
