@@ -117,7 +117,7 @@ function makeSensorCardStyles(C: Theme) {
       flex: 1,
       backgroundColor: C.surface,
       borderRadius: 18,
-      padding: 16,
+      padding: 20,
       borderTopWidth: 3,
       shadowColor: '#000',
       shadowOpacity: 0.06,
@@ -136,7 +136,7 @@ function makeSensorCardStyles(C: Theme) {
       marginBottom: 10,
     },
     label: {
-      fontSize: 11,
+      fontSize: 9,
       color: C.textMuted,
       fontWeight: '700',
       textTransform: 'uppercase',
@@ -144,7 +144,7 @@ function makeSensorCardStyles(C: Theme) {
       marginBottom: 4,
     },
     value: {
-      fontSize: 26,
+      fontSize: 20,
       fontWeight: '800',
       marginBottom: 10,
       color: C.text,
@@ -169,7 +169,7 @@ function makeSensorCardStyles(C: Theme) {
       gap: 6,
     },
     statusText: {
-      fontSize: 11,
+      fontSize: 9,
       fontWeight: '700',
       flex: 1,
     },

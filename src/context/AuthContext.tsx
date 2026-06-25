@@ -15,10 +15,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    AsyncStorage.getItem('userToken').then(token => {
-      setIsAuthenticated(!!token);
-      setIsLoading(false);
-    });
+    AsyncStorage.getItem('userToken')
+      .then(token => setIsAuthenticated(!!token))
+      .catch(() => setIsAuthenticated(false))
+      .finally(() => setIsLoading(false));
   }, []);
 
   async function login(email: string, password: string): Promise<boolean> {
@@ -31,8 +31,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function logout() {
-    await AsyncStorage.removeItem('userToken');
-    setIsAuthenticated(false);
+    try {
+      await AsyncStorage.removeItem('userToken');
+    } finally {
+      setIsAuthenticated(false);
+    }
   }
 
   return (

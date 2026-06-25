@@ -48,23 +48,23 @@ export const lightTheme: Theme = {
   primaryBg:          '#1b4332',
   primaryForeground:  '#ffffff',
 
-  temp:   '#e76f51',
+  temp:   '#922206',
   tempBg: '#fef3ee',
 
-  humid:   '#4895ef',
+  humid:   '#042c59',
   humidBg: '#eff6ff',
 
-  fan:   '#8b5cf6',
+  fan:   '#8c32ccda',
   fanBg: '#f5f3ff',
 
-  humidifier:   '#06b6d4',
+  humidifier:   '#0a99b2',
   humidifierBg: '#ecfeff',
 
-  success:   '#22c55e',
+  success:   '#0c9f42',
   successBg: '#f0fdf4',
   warning:   '#f59e0b',
   warningBg: '#fffbeb',
-  error:     '#ef4444',
+  error:     '#7b0a0a',
   errorBg:   '#fef2f2',
 };
 
